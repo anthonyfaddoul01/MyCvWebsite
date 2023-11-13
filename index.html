@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sign Up</title>
+<link rel="stylesheet" href="css/style.css">
+</head>  
+<body>
+
+<h1 style="color: white; padding-left: 8px;">Sign Up</h1>
+
+<div class="scontainer">
+  <form method="post" action="pages/signup.php" onsubmit="return validateForm()">
+    <label class="labels" for="username">Username</label><br>
+    <input type="text" id="username" name="username" required><br>
+
+    <label class="labels" for="fullname">Full Name</label><br>
+    <input type="text" id="fullname" name="fullname" required><br>
+
+    <label class="labels" for="password">Password</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label class="labels" for="sex">Sex</label><br>
+    <select id="sex" name="sex">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select><br><br>
+
+    <label class="labels" for="birthdate">Date of Birth</label> <br>
+    <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+    <button class="sbutton" type="submit">Sign Up</button>
+    <button onclick="window.location.href='pages/loginpage.php'" style="margin-left: 10%;" class="sbutton" >Log In</button>
+  </form>
+  
+</div>
+
+</body>
+<script>
+    function validateForm() {
+  var password = document.getElementById('password').value;
+  if (password.length < 8) {
+    alert('Password must be at least 8 characters long.');
+    return false;
+  }
+
+  var formData = new FormData(document.querySelector('form'));
+  var urlEncodedData = "";
+  for (var pair of formData.entries()) {
+    if (urlEncodedData.length > 0) {
+      urlEncodedData += "&";
+    }
+    urlEncodedData += encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "pages/signup.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var response = xhr.responseText;
+        alert(response); 
+        if (response === "Sign-up successful!") {
+          window.location.href = "pages/loginpage.php";
+        }
+      }
+    }
+  };
+  xhr.send(urlEncodedData);
+
+  return false;
+
+    }
+    </script>
+</html>
+
